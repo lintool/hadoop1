@@ -14,7 +14,7 @@ import java.nio.charset.CharacterCodingException;
 public class ByteUtil {
 
     private final static int INT_64 = 64, INT_8 = 8;
-    private final static int MASK = 0x000000FF;    
+    public final static int MASK = 0x000000FF;
 
     public static void writeInt(byte[] b, int i, int value) {
         b[i++] = (byte) (value >> 24);
@@ -76,10 +76,19 @@ public class ByteUtil {
         //return new String(buffer);
     }
 
-    public static String readString(final byte[] a, final int i, final int j) throws CharacterCodingException {
+    public static String readString(final byte[] a, final int i, final int stringLength) throws CharacterCodingException {
         //return new String(Arrays.copyOfRange(a, i, j + 1));
         //byte[] bytes = Arrays.copyOfRange(a, i, j+1);
         //return Text.decode(bytes);
-        return decodeUTF16BE(a, i, (j - i) + 1);
+        return decodeUTF16BE(a, i, (stringLength - i) + 1);
+    }
+
+    public static long readLong(final byte[] b, final int offset) {
+        long value = 0;
+        for (int i = 0; i < b.length; i++) {
+            value += ((long) b[i] & 0xffL) << (8 * i);
+        }
+        
+        return value;
     }
 }

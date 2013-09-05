@@ -207,4 +207,11 @@ public class ArrayListOfIntsWritable extends ArrayListOfInts
     public void set(WritableComparable obj) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public ArrayListOfIntsWritable create(byte[] input, int offset) throws IOException {
+        ArrayListOfIntsWritable m = new ArrayListOfIntsWritable();
+        m.readFields(input, offset);
+        return m;
+    }
 }

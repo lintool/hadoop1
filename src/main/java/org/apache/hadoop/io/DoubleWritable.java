@@ -7,6 +7,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.util.ByteUtil;
 
 /**
  * @author tim
@@ -89,5 +90,17 @@ public class DoubleWritable implements WritableComparable {
     @Override
     public void set(WritableComparable obj) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void readFields(byte[] input, int offset) throws IOException {
+        this.i = ByteUtil.readDouble(input, offset);
+    }
+
+    @Override
+    public DoubleWritable create(byte[] input, int offset) throws IOException {
+        DoubleWritable m = new DoubleWritable();
+        m.readFields(input, offset);
+        return m;
     }
 }

@@ -101,4 +101,14 @@ public class NullWritable implements WritableComparable {
     public void set(WritableComparable obj) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public void readFields(byte[] input, int offset) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public WritableComparable create(byte[] input, int offset) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

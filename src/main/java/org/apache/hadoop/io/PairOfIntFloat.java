@@ -19,6 +19,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.util.ByteUtil;
 
 /**
  * WritableComparable representing a pair of an int and long. The elements in
@@ -82,7 +83,7 @@ public class PairOfIntFloat implements WritableComparable<PairOfIntFloat> {
         buf.putFloat(rightElement);
         return 8;
     }
-    
+
     /**
      * Returns the left element.
      *
@@ -246,5 +247,18 @@ public class PairOfIntFloat implements WritableComparable<PairOfIntFloat> {
     @Override
     public void set(WritableComparable obj) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public PairOfIntFloat create(byte[] input, int offset) throws IOException {
+        PairOfIntFloat m = new PairOfIntFloat();
+        m.readFields(input, offset);
+        return m;
+    }
+
+    @Override
+    public void readFields(byte[] input, int offset) throws IOException {
+        leftElement = ByteUtil.readInt(input, offset);
+        rightElement = ByteUtil.readFloat(input, offset);
     }
 }

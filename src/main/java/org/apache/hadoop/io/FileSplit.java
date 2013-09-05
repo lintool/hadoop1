@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
 import org.apache.hadoop.mapreduce.InputSplit;
+import org.apache.hadoop.util.ByteUtil;
 
 /**
  * A section of an input file. Returned by {@link
@@ -116,5 +117,20 @@ public class FileSplit extends InputSplit implements Writable {
     @Override
     public int write(ByteBuffer buf) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void readFields(byte[] input, int offset) throws IOException {
+        file = ByteUtil.readString(input, offset + Text.offset, input[offset + Text.offset - 1] & ByteUtil.MASK);
+        start = ByteUtil.readLong(input, offset);
+        length = ByteUtil.readLong(input, offset);
+        hosts = null;
+    }
+
+    @Override
+    public FileSplit create(byte[] input, int offset) throws IOException {
+        FileSplit m = new FileSplit();
+        m.readFields(input, offset);
+        return m;
     }
 }

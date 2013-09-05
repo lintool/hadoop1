@@ -228,4 +228,14 @@ public class TaskID extends ID {
     public int write(DynamicDirectByteBuffer buf) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public void readFields(byte[] input, int offset) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public WritableComparable create(byte[] input, int offset) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

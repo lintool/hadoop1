@@ -3,10 +3,12 @@
  */
 package org.apache.hadoop.io;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.apache.hadoop.util.ByteUtil;
 
 /**
  * @author tim
@@ -42,7 +44,7 @@ public class IntWritable implements WritableComparable {
         buf.putInt(i);
         return 4;
     }
-    
+
     public final int get() {
         return i;
     }
@@ -130,5 +132,46 @@ public class IntWritable implements WritableComparable {
     @Override
     public void set(WritableComparable obj) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Deserializes this object.
+     *
+     * @param in source for raw byte representation
+     */
+    public void readFields(byte[] a, int offset) throws IOException {
+        this.i = ByteUtil.readInt(a, offset);
+    }
+
+    /**
+     * Creates object from a
+     * <code>DataInput</code>.
+     *
+     * @param in source for reading the serialized representation
+     * @return newly-created object
+     * @throws IOException
+     */
+    public static IntWritable create(DataInputStream in) throws IOException {
+        IntWritable m = new IntWritable();
+        m.readFields(in);
+
+        return m;
+    }
+
+    /**
+     * Creates object from a byte array.
+     *
+     * @param bytes raw serialized representation
+     * @return newly-created object
+     * @throws IOException
+     */
+    public static IntWritable create(byte[] bytes) throws IOException {
+        return create(new DataInputStream(new ByteArrayInputStream(bytes)));
+    }
+
+    public IntWritable create(byte[] bytes, int offset) throws IOException {
+        IntWritable m = new IntWritable();
+        m.readFields(bytes, offset);
+        return m;
     }
 }

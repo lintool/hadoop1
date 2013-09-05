@@ -28,6 +28,12 @@ public interface WritableComparable<T> extends Writable<T>, Comparable<T> {
 
     @Override
     void readFields(DataInputStream in) throws IOException;
+    
+    @Override
+    void readFields(byte[] input, int offset) throws IOException;
+    
+    @Override
+    WritableComparable create(byte[] input, int offset) throws IOException;
 
     @Override
     int hashCode();

@@ -105,9 +105,9 @@ public class KeyValueRecordReader extends RecordReader<WritableComparable, Writa
     public final boolean nextKeyValue() {
         try {
             if (k == null) {
-                k = new IntWritable(-1);
+                k = job.getMapOutputKeyClass().newInstance();
             }
-            v = new Text("");
+            v = job.getMapOutputValueClass().newInstance();
 
             if (offsetArrayIndex != inputOffsetsSize) {
                 offset = ByteUtil.readInt(inputOffsets, offsetArrayIndex);
@@ -124,8 +124,10 @@ public class KeyValueRecordReader extends RecordReader<WritableComparable, Writa
             }
             previousKeyEle = currentKeyEle;
 
-            k.set(currentKeyEle);
-            v.set(readString(input, offset + 4 + v.getOffset(), offset + 4 + v.getOffset() + (input[offset + 4 + v.getOffset() - 1] & MASK) - 1));
+            //k.set(currentKeyEle);
+            k = k.create(input, offset);
+            //v.set(readString(input, offset + 4 + v.getOffset(), offset + 4 + v.getOffset() + (input[offset + 4 + v.getOffset() - 1] & MASK) - 1));
+            v = v.create(input, offset + 4);
 
             return true;
         } catch (Exception e) {
@@ -147,8 +149,11 @@ public class KeyValueRecordReader extends RecordReader<WritableComparable, Writa
             v = new Text("");
 
             offset = ByteUtil.readInt(inputOffsets, ind);
-            k.set(ByteUtil.readInt(input, offset));
-            v.set(readString(input, offset + 4 + k.getOffset(), input[offset + 4 + k.getOffset() - 1] & MASK));
+            //k.set(ByteUtil.readInt(input, offset));
+            //v.set(readString(input, offset + 4 + k.getOffset(), input[offset + 4 + k.getOffset() - 1] & MASK));
+            k = k.create(input, offset);
+            v = v.create(input, offset + 4);
+
 
             return true;
         } catch (Exception e) { //e.printStackTrace(); return false;
@@ -181,6 +186,11 @@ public class KeyValueRecordReader extends RecordReader<WritableComparable, Writa
 
     @Override
     public void initialize(final ByteBuffer input) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void initialize(byte[] input, byte[] offsets, int offsetsSize) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

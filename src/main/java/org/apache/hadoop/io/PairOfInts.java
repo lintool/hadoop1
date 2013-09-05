@@ -236,7 +236,7 @@ public class PairOfInts implements WritableComparable<PairOfInts> {
         return new PairOfInts(this.leftElement, this.rightElement);
     }
 
-    public static PairOfInts create(byte[] bytes, int offset) throws IOException {
+    public PairOfInts create(byte[] bytes, int offset) throws IOException {
         PairOfInts m = new PairOfInts();
         m.readFields(bytes, offset);
         return m;

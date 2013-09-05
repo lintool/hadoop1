@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.hadoop.util.ByteUtil;
 
 /**
  * <p> Writable extension of a Java ArrayList. Elements in the list must be
@@ -132,7 +133,7 @@ public class ArrayListWritable<E extends WritableComparable> extends ArrayList<E
             Logger.getLogger(ArrayListWritable.class.getName()).log(Level.SEVERE, null, ex);
         }
         buf.put(buf1);
-        
+
         for (int i = 0; i < size(); i++) {
             obj = get(i);
             if (obj == null) {
@@ -159,7 +160,7 @@ public class ArrayListWritable<E extends WritableComparable> extends ArrayList<E
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(ArrayListWritable.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         for (int i = 0; i < size(); i++) {
             obj = get(i);
             if (obj == null) {
@@ -212,5 +213,35 @@ public class ArrayListWritable<E extends WritableComparable> extends ArrayList<E
     @Override
     public void set(WritableComparable obj) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void readFields(byte[] input, int offset) throws IOException {
+        this.clear();
+
+        int numFields = ByteUtil.readInt(input, offset);
+        offset = offset + 4;
+        if (numFields == 0) {
+            return;
+        }
+        String className = ByteUtil.readString(input, offset + Text.offset, input[offset + Text.offset - 1] & ByteUtil.MASK);
+        E obj;
+        try {
+            Class<E> c = (Class<E>) Class.forName(className);
+            for (int i = 0; i < numFields; i++) {
+                obj = (E) (c.newInstance()).create(input, offset);
+                this.add(obj);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public ArrayListWritable create(byte[] input, int offset) throws IOException {
+        ArrayListWritable m = new ArrayListWritable();
+        m.readFields(input, offset);
+        return m;
     }
 }

@@ -70,6 +70,27 @@ public class PairOfWritables<L extends WritableComparable, R extends WritableCom
         }
     }
 
+    public void readFields(byte[] a, int offset) throws IOException {
+
+        try {
+            Class<L> key = null;
+            Class<R> value = null;
+            L keyClass = key.newInstance();
+            leftElement = (L) keyClass.create(a, offset);
+            R valueClass = value.newInstance();
+            rightElement = (R) valueClass.create(a, offset);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to create PairOfWritables!");
+        }
+    }
+
+    public PairOfWritables create(byte[] bytes, int offset) throws IOException {
+        PairOfWritables m = new PairOfWritables();
+        m.readFields(bytes, offset);
+        return m;
+    }
+
     /**
      * Serializes this pair.
      *
@@ -194,5 +215,5 @@ public class PairOfWritables<L extends WritableComparable, R extends WritableCom
         //b = (byte) rightElement.getClass().getCanonicalName().length();
         buf.putStringNoSep(rightElement.getClass().getCanonicalName());
         return 0;
-    }   
+    }
 }

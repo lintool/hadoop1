@@ -1,0 +1,28 @@
+10
+
+dir
+0
+http://mapreduce4j.googlecode.com/svn/trunk/mapreduce4j/src/org/apache/hadoop/util/map
+http://mapreduce4j.googlecode.com/svn
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+6f7f5162-d561-11de-ba7e-09ca73f1295e
+

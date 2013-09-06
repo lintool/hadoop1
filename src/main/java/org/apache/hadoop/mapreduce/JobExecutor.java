@@ -3,6 +3,7 @@
  */
 package org.apache.hadoop.mapreduce;
 
+import com.higherfrequencytrading.affinity.AffinityThreadFactory;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
@@ -19,8 +20,6 @@ import test.hone.invertedindexing.TextPairOfIntsRecordReader;
 import test.hone.kmeans.IntPairDoublePointIntNodeRecordReader;
 import test.hone.mrlda.PairOfIntsDoubleRecordReader;
 import test.hone.pagerank.IntPageRankNodeRecordReader;
-import static vanilla.java.affinity.AffinityStrategies.*;
-import vanilla.java.affinity.AffinityThreadFactory;
 
 /**
  * The actual Map Reduce implementation This is a very simple implementation

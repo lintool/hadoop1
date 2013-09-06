@@ -234,6 +234,7 @@ public class VariationalInference {
             job.setMapOutputValueClass(DoubleWritable.class);
             job.setOutputKeyClass(IntWritable.class);
             job.setOutputValueClass(DoubleWritable.class);
+            job.setReducerRecordReader(PairOfIntsDoubleRecordReader.class);
 
             //job.setCompressMapOutput(false);
             //FileOutputFormat.setCompressOutput(conf, true);

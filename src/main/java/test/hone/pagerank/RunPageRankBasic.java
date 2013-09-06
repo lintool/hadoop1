@@ -508,6 +508,7 @@ public class RunPageRankBasic {
         job.setIterationOutputToDisk(false, endIter);
         job.setPartitionerClass(HashPartitioner.class);
         job.setMapperClass(useInMapperCombiner ? MapWithInMapperCombiningClass.class : MapClass.class);
+        job.setReducerRecordReader(IntPageRankNodeRecordReader.class);
 
         if (useCombiner) {
             job.setCombinerClass(CombineClass.class);
@@ -582,6 +583,7 @@ public class RunPageRankBasic {
         job.setInMemoryOutput(true);
         job.setIterationOutputToDisk(true, endIter);
         job.waitForCompletion(true);
+        job.setReducerRecordReader(IntPageRankNodeRecordReader.class);
         reduceOutput = job.getReduceOutput();
     }
 

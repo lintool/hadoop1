@@ -228,7 +228,7 @@ public class JobExecutor {
 
             //final ThreadPoolExecutor mapExecutorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(numMapperWorkerPool);
             if (forkjoinpool == 0) {
-                mapExecutorServiceThread = (ThreadPoolExecutor) Executors.newFixedThreadPool(numMapperWorkerPool, new AffinityThreadFactory("bg", SAME_CORE, SAME_SOCKET, ANY));
+                mapExecutorServiceThread = (ThreadPoolExecutor) Executors.newFixedThreadPool(numMapperWorkerPool, new AffinityThreadFactory("bg", com.higherfrequencytrading.affinity.AffinityStrategies.SAME_CORE, com.higherfrequencytrading.affinity.AffinityStrategies.SAME_SOCKET, com.higherfrequencytrading.affinity.AffinityStrategies.ANY));
             } else {
                 mapExecutorServiceFork = new ForkJoinPool(numMapperWorkerPool, ForkJoinPool.defaultForkJoinWorkerThreadFactory, Thread.getDefaultUncaughtExceptionHandler(), true);
             }
@@ -587,7 +587,7 @@ public class JobExecutor {
                 long start2 = System.currentTimeMillis();
 //                final ThreadPoolExecutor sortExecutorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(numSortWorkerPool);
                 if (forkjoinpool == 0) {
-                    sortExecutorServiceThread = (ThreadPoolExecutor) Executors.newFixedThreadPool(numSortWorkerPool, new AffinityThreadFactory("bg", SAME_CORE, SAME_SOCKET, ANY));
+                    sortExecutorServiceThread = (ThreadPoolExecutor) Executors.newFixedThreadPool(numSortWorkerPool, new AffinityThreadFactory("bg", com.higherfrequencytrading.affinity.AffinityStrategies.SAME_CORE, com.higherfrequencytrading.affinity.AffinityStrategies.SAME_SOCKET, com.higherfrequencytrading.affinity.AffinityStrategies.ANY));
                 } else {
                     sortExecutorServiceFork = new ForkJoinPool(numSortWorkerPool, ForkJoinPool.defaultForkJoinWorkerThreadFactory, Thread.getDefaultUncaughtExceptionHandler(), true);
                 }
@@ -749,7 +749,7 @@ public class JobExecutor {
                 intermArray2 = new Object[250000][3];
                 final List<Callable<Object>> combinertasks = new ArrayList<Callable<Object>>();
                 //final ThreadPoolExecutor combinerExecutorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(numReducerWorkerPool);
-                final ThreadPoolExecutor combinerExecutorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(numReducerWorkerPool, new AffinityThreadFactory("bg", SAME_CORE, SAME_SOCKET, ANY));
+                final ThreadPoolExecutor combinerExecutorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(numReducerWorkerPool, new AffinityThreadFactory("bg", com.higherfrequencytrading.affinity.AffinityStrategies.SAME_CORE, com.higherfrequencytrading.affinity.AffinityStrategies.SAME_SOCKET, com.higherfrequencytrading.affinity.AffinityStrategies.ANY));
 
                 //for (Future< Object> fut : invokeAll1) {
                 for (int i = 0; i < sortCount; ++i) {
@@ -758,7 +758,7 @@ public class JobExecutor {
                     //(Object[]) fut.get();
                     final byte[] intermediateData = ((byte[]) intermediateDataStream[0]);
                     final byte[] intermediateDataOffsets = ((byte[]) intermediateDataStream[1]);
-                    final int intermediateDataOffsetsSize = ((int) intermediateDataStream[2]);
+                    final int intermediateDataOffsetsSize = ((Integer) intermediateDataStream[2]);
                     final boolean add = readers.add(initialiseReader(intermediateData, intermediateDataOffsets, intermediateDataOffsetsSize));
 
                     final KeyValuesIterator kvi = new KeyValuesIterator(readers, prop);
@@ -798,7 +798,7 @@ public class JobExecutor {
              * ***** Start Reducer Phase ********
              */
             if (forkjoinpool == 0) {
-                reducerExecutorServiceThread = (ThreadPoolExecutor) Executors.newFixedThreadPool(numReducerWorkerPool, new AffinityThreadFactory("bg", SAME_CORE, SAME_SOCKET, ANY));
+                reducerExecutorServiceThread = (ThreadPoolExecutor) Executors.newFixedThreadPool(numReducerWorkerPool, new AffinityThreadFactory("bg", com.higherfrequencytrading.affinity.AffinityStrategies.SAME_CORE, com.higherfrequencytrading.affinity.AffinityStrategies.SAME_SOCKET, com.higherfrequencytrading.affinity.AffinityStrategies.ANY));
             } else {
                 reducerExecutorServiceFork = new ForkJoinPool(numReducerWorkerPool, ForkJoinPool.defaultForkJoinWorkerThreadFactory, Thread.getDefaultUncaughtExceptionHandler(), true);
             }
@@ -827,7 +827,7 @@ public class JobExecutor {
                 //final byte[] intermediateDataOffsets = ((byte[]) intermediateDataStream[1]);
                 final byte[] intermediateData = (byte[]) reducerInput[i * 3 + 0];
                 final byte[] intermediateDataOffsets = (byte[]) reducerInput[i * 3 + 1];
-                final int intermediateDataOffsetsSize = ((int) reducerInput[i * 3 + 2]);
+                final int intermediateDataOffsetsSize = ((Integer) reducerInput[i * 3 + 2]);
                 final boolean add = readers.add(initialiseReader(intermediateData, intermediateDataOffsets, intermediateDataOffsetsSize));
                 reducerInput[i] = null;
                 final Reducer reducer = job.getReducerClass().newInstance();

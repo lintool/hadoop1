@@ -299,6 +299,7 @@ public class MapReduceKMeans_Eff {
         job.setNumReduceTasks(numReducers);
         job.setInputDirectoryPath(dataPath);
         job.setPartitionerClass(HashPartitioner.class);
+        job.setReducerRecordReader(IntPairDoublePointIntNodeRecordReader.class);
         //job.setVariable("centersMap", centersMap);
 
         int ind = 0;

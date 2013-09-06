@@ -142,6 +142,7 @@ public class BuildInvertedIndex {
         job.setOutputFormatClass(SequenceMemoryOutputFormat.class);
         job.setPartitionerClass(HashPartitioner.class);
         job.setInputFormatClass(TextInputFormat.class);
+        job.setReducerRecordReader(TextPairOfIntsRecordReader.class);
 
         job.setMapperClass(MyMapper.class);
         job.setReducerClass(MyReducer.class);

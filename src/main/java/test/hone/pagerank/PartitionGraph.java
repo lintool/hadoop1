@@ -16,7 +16,6 @@
 
 package test.hone.pagerank;
 
-import edu.umd.cloud9.example.pagerank.RangePartitioner;
 import org.apache.hadoop.conf.Configuration;
 //import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.io.IntWritable;
@@ -104,6 +103,7 @@ public class PartitionGraph {
 
 		job.setOutputKeyClass(IntWritable.class);
 		job.setOutputValueClass(PageRankNode.class);
+                job.setReducerRecordReader(IntPageRankNodeRecordReader.class);
 
 		if (useRange) {
 			job.setPartitionerClass(RangePartitioner.class);

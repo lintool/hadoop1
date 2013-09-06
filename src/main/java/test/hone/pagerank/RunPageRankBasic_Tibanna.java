@@ -602,6 +602,7 @@ public class RunPageRankBasic_Tibanna {
         job.setInMemoryOutput(true);
         job.setIterationOutputToDisk(true, endIter);
         job.waitForCompletion(true);
+        job.setReducerRecordReader(IntPageRankNodeRecordReader.class);
         reduceOutput = job.getReduceOutput();
     }
 

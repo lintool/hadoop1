@@ -17,6 +17,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceMemoryOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextIntRecordReader;
 import org.apache.hadoop.mapreduce.lib.partition.HashPartitioner;
 
 public class WordCount_Tibanna {
@@ -131,6 +132,7 @@ public class WordCount_Tibanna {
         job.setReducerClass(IntSumReducer.class);
         job.setPartitionerClass(HashPartitioner.class);
         job.setOutputFormatClass(SequenceMemoryOutputFormat.class);
+        job.setReducerRecordReader(TextIntRecordReader.class);
 
         //job.setPartitionerClass(RoundRobinPartitioner.class);
 

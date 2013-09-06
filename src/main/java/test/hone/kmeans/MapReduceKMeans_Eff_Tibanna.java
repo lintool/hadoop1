@@ -256,6 +256,7 @@ public class MapReduceKMeans_Eff_Tibanna {
         job.setNumReduceTasks(numReducers);
         job.setInputDirectoryPath(dataPath);
         job.setPartitionerClass(HashPartitioner.class);
+        job.setReducerRecordReader(IntPairDoublePointIntNodeRecordReader.class);        
 
         int ind = 0;
         for (DoublePoint dp : centers) {

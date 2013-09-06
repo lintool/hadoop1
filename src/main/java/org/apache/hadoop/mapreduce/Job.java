@@ -13,6 +13,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.mapreduce.lib.input.InputFormat;
 import org.apache.hadoop.mapreduce.lib.output.OutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.RecordReader;
 
 /**
  * The job to run
@@ -37,6 +38,7 @@ public class Job {
     private Class<? extends WritableComparable> outputValueClass;
     private Class<? extends WritableComparable> mapKeyInputClass;
     private Class<? extends WritableComparable> mapValueInputClass;
+    private Class<? extends RecordReader> reducerRecordReaderClass;
     private String inputDirectoryPath;
     private boolean inMemoryInput = false;
     private boolean inMemoryOutput = false;
@@ -96,6 +98,14 @@ public class Job {
 
     public final boolean getFirstIterationInputFromDisk() {
         return firstIterationInputFromDisk;
+    }
+
+    public final void setReducerRecordReader(final Class<? extends RecordReader> rreader) {
+        this.reducerRecordReaderClass = rreader;
+    }
+
+    public final Class<? extends RecordReader> getReducerRecordReader() {
+        return this.reducerRecordReaderClass;
     }
 
     public final void setIterationOutputToDisk(boolean bool, int endIter) {
